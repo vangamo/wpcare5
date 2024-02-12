@@ -27,7 +27,7 @@ def get_link_info_from_bs4(link):
 
 class Page(WPCarePage):
   
-  def __init__(self, url_or_id, domain=None):
+  def __init__(self, url_or_id):
     self.links = {
         "navigation": {
           "internal_pages": [],
@@ -40,7 +40,7 @@ class Page(WPCarePage):
         "images": []
       }
 
-    super().__init__(url_or_id, domain)
+    super().__init__(url_or_id)
      
 
   def getLinks(self):

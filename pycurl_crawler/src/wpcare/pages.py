@@ -12,6 +12,7 @@ PAGES_FILENAME = os.path.join(DATA_DIR, "pages.json")
 
 
 class Pages:
+  MODEL_CLASS = Page
   PAGES = []
 
   KEYNAMES = ['id', 'uuid', 'url']
@@ -19,7 +20,7 @@ class Pages:
 
   @classmethod
   def init(cls):
-    Page.ADAPTER = cls
+    cls.MODEL_CLASS.ADAPTER = cls
 
     try:
       with open(PAGES_FILENAME, 'r') as f:
@@ -46,7 +47,7 @@ class Pages:
     if item_data is None:
       return None
 
-    item = Page(item_data)
+    item = cls.MODEL_CLASS(item_data)
 
     return item
 
@@ -54,7 +55,7 @@ class Pages:
   def list(cls, **kwargs):
     item_list = []
     if 'site' in kwargs:
-      item_list = (Page(page_data) for page_data in cls.PAGES if page_data["site"] == kwargs['site'])
+      item_list = (cls.MODEL_CLASS(page_data) for page_data in cls.PAGES if page_data["site"] == kwargs['site'])
 
     return item_list
 

@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup
 class Page:
   ADAPTER = None
 
-  def __init__(self, url_or_id, domain=None):
+  def __init__(self, url_or_id):
     if isinstance(url_or_id, str) or isinstance(url_or_id, int):
       if isinstance(url_or_id, int) or url_or_id.isdecimal():
         self.id = int(url_or_id)

@@ -1,8 +1,9 @@
 from wpcare.pages import Pages as WPCarePages
-
+from crawlerlib.page import Page
 
 
 class Pages(WPCarePages):
+  MODEL_CLASS = Page
   PAGES = []
 
   KEYNAMES = ['id', 'uuid', 'url']
