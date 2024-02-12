@@ -13,7 +13,7 @@ class PagesExplorer:
 
   def visit(self):
     page = Page(self.url)
-    page.type.append('landing')
+    page.addType('landing')
     page.save()
 
     list_pages_to_visit = [page.url]
@@ -28,7 +28,7 @@ class PagesExplorer:
       visiting_page = Page(visiting_url)
       if VERBOSE: print()
       if VERBOSE: print('Visit:  ', visiting_page.url)
-      visiting_page.type.append('crawler')
+      visiting_page.addType('crawler')
       visiting_page.getLinks()
       visiting_page.save()
 

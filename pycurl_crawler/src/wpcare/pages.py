@@ -69,27 +69,50 @@ def get_link_info_from_bs4(link):
 
 
 class Page:
-  def __init__(self, url, domain=None):
-    self.id = None
-    self.created_at = None
-    self.url = normalize_slash_url(url)
-    self.uuid = None
-    self.site = ''
-    self.type = []
-    self.visited_at = None
-    self.links = {
-      "navigation": {
-        "internal_pages": [],
-        "internal_resources": [],
-        "external": [],
-        "other": []
-      },
-      "styles": [],
-      "scripts": [],
-      "images": []
-    }
+  def __init__(self, url_or_id, domain=None):
+    if isinstance(url_or_id, str) or isinstance(url_or_id, int):
+      if isinstance(url_or_id, int) or isdecimal(url_or_id):
+        self.id = int(url_or_id)
+        self.url = None
+      else:
+        self.id = None
+        self.url = normalize_slash_url(url_or_id)
+ 
+      self.created_at = None
+      self.uuid = None
+      self.site = ''
+      self.type = []
+      self.visited_at = None
+      self.links = {
+        "navigation": {
+          "internal_pages": [],
+          "internal_resources": [],
+          "external": [],
+          "other": []
+        },
+        "styles": [],
+        "scripts": [],
+        "images": []
+      }
 
-    self.load()
+      self.load()
+
+    elif isinstance(url_or_id, dict):
+      self.objetivize(url_or_id)
+
+    else:
+      raise BaseException("TODO: Not implemented!")
+
+  def addType(self, pageType):
+    if pageType not in self.type:
+      self.type.append(pageType)
+
+  def removeType(self, pageType):
+    if pageType in self.type:
+      self.type.remove(pageType)
+
+  def hasType(self, pageType):
+    return pageType in self.type
 
   def getLinks(self):
     now = int(datetime.utcnow().timestamp())
@@ -169,6 +192,7 @@ class Page:
     self.id = data['id']
     self.created_at = data["created_at"]
     self.uuid = data['uuid']
+    self.url = data['url']
     self.site = data['site']
     self.type = data['type']
     self.visited_at = data['visited_at'] if 'visited_at' in data else None
@@ -202,11 +226,29 @@ class Pages:
 
   @classmethod
   def get(cls, **kwargs):
-    raise BaseException("TODO: Not implemented!")
+    if 'id' in kwargs:
+      item_data = next((page for page in cls.PAGES if page["id"] == kwargs['id']), None)
+    elif 'uuid' in kwargs:
+      item_data = next((page for page in cls.PAGES if page["uuid"] == kwargs['uuid']), None)
+    elif 'url' in kwargs:
+      item_data = next((page for page in cls.PAGES if page["url"] == normalize_slash_url(kwargs['url'])), None)
+    else:
+      raise BaseException("TODO: Not implemented!")
+
+    if item_data is None:
+      return None
+
+    item = Page(item_data)
+
+    return item
 
   @classmethod
-  def list(cls):
-    raise BaseException("TODO: Not implemented!")
+  def list(cls, **kwargs):
+    item_list = []
+    if 'site' in kwargs:
+      item_list = (Page(page_data) for page_data in cls.PAGES if page_data["site"] == kwargs['site'])
+
+    return item_list
 
   @classmethod
   def create(cls, page):
