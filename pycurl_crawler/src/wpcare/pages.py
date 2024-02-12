@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 import uuid
 import json
 import os
+from datetime import datetime
 
 ROOT_DIR = os.path.abspath(os.curdir)
 DATA_DIR = os.path.join(ROOT_DIR, "data")
@@ -73,14 +74,33 @@ class Page:
     self.uuid = None
     self.site = ''
     self.type = []
+    self.visited_at = None
+    self.links = {
+      "navigation": {
+        "internal_pages": [],
+        "internal_resources": [],
+        "external": [],
+        "other": []
+      },
+      "styles": [],
+      "scripts": [],
+      "images": []
+    }
 
     self.load()
 
   def getLinks(self):
+    now = int(datetime.utcnow().timestamp())
+
+    if self.visited_at is not None and now - self.visited_at < 60:
+      print('Recent')
+      return
+
     try:
       crawler = Crawler(self.url)
       crawler.perform()
       html = crawler.get_html()
+      self.visited_at = now
 
     except Exception as e:
       print('ERROR getting ' + url)
@@ -118,7 +138,7 @@ class Page:
         links['other'].append(link)
 
     self.links = {
-        "links": links,
+        "navigation": links,
         "styles":  [link.get('src') for link in soup.find_all('link') if link.get('src') is not None and link.get('src') != '' ],
         "scripts":  [link.get('src') for link in soup.find_all('script') if link.get('src') is not None and link.get('src') != '' ],
         "images":  [link.get('src') for link in soup.find_all('img') if link.get('src') is not None and link.get('src') != '' ]
@@ -134,6 +154,7 @@ class Page:
       "url": normalize_slash_url(self.url),
       "site": self.site,
       "type": self.type,
+      "visited_at": self.visited_at,
       "links": self.links
     }
 
@@ -141,6 +162,8 @@ class Page:
     self.uuid = data['uuid']
     self.site = data['site']
     self.type = data['type']
+    self.visited_at = data['visited_at'] if 'visited_at' in data else None
+    self.links = data['links']
 
   def save(self):
     page_index = next((index for index, page in enumerate(PAGES) if page["url"] == self.url), None)

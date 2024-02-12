@@ -1,13 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from wpcare.pages import Page
-
+from pagesExplorer import PagesExplorer
 
 if __name__ == "__main__":
-  url = 'https://python.org'
+  url = 'https://python.org/'
 
-  page = Page(url)
-  page.getLinks()
-
-  page.save()
+  explorer = PagesExplorer(url)
+  explorer.set_limit(1)
+  explorer.visit()
