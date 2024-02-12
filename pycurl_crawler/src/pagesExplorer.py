@@ -1,4 +1,4 @@
-from wpcare.page import Page
+from crawlerlib.page import Page
 from wpcare.utils import normalize_slash_url
 
 LIMIT = 100
