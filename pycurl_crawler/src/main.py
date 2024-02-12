@@ -8,6 +8,6 @@ if __name__ == "__main__":
   url = 'https://python.org'
 
   page = Page(url)
-  #page.getLinks()
+  page.getLinks()
 
   page.save()

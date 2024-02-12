@@ -40,6 +40,14 @@ It's necessary install some apt packages (solution found in [Stack overflow](htt
 sudo apt install libcurl4-openssl-dev libssl-dev
 ```
 
+```bash
+pip install beautifulsoup4
+```
+
+```bash
+pip freeze > requirements.txt
+```
+
 ## Install environment (after clonning this repository)
 
 Activate contained python in folder (in Linux)
