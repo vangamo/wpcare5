@@ -1,15 +1,13 @@
-from crawlerlib.crawler import Crawler
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+from wpcare.pages import Page
 
 
 if __name__ == "__main__":
   url = 'https://nucep.com'
 
-  try:
-    crawler = Crawler(url)
-    crawler.perform()
-    html = crawler.get_html()
+  page = Page(url)
+  #page.getLinks()
 
-    print(html)
-  except Exception as e:
-    print('ERROR getting ' + url)
-    print(e)
+  page.save()
