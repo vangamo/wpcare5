@@ -71,7 +71,7 @@ def get_link_info_from_bs4(link):
 class Page:
   def __init__(self, url_or_id, domain=None):
     if isinstance(url_or_id, str) or isinstance(url_or_id, int):
-      if isinstance(url_or_id, int) or isdecimal(url_or_id):
+      if isinstance(url_or_id, int) or url_or_id.isdecimal():
         self.id = int(url_or_id)
         self.url = None
       else:
@@ -81,7 +81,7 @@ class Page:
       self.created_at = None
       self.uuid = None
       self.site = ''
-      self.type = []
+      self.types = []
       self.visited_at = None
       self.links = {
         "navigation": {
@@ -104,15 +104,15 @@ class Page:
       raise BaseException("TODO: Not implemented!")
 
   def addType(self, pageType):
-    if pageType not in self.type:
-      self.type.append(pageType)
+    if pageType not in self.types:
+      self.types.append(pageType)
 
   def removeType(self, pageType):
-    if pageType in self.type:
-      self.type.remove(pageType)
+    if pageType in self.types:
+      self.types.remove(pageType)
 
   def hasType(self, pageType):
-    return pageType in self.type
+    return pageType in self.types
 
   def getLinks(self):
     now = int(datetime.utcnow().timestamp())
@@ -183,7 +183,7 @@ class Page:
       "uuid": self.uuid,
       "url": normalize_slash_url(self.url),
       "site": self.site,
-      "type": self.type,
+      "types": self.types,
       "visited_at": self.visited_at,
       "links": self.links
     }
@@ -194,7 +194,7 @@ class Page:
     self.uuid = data['uuid']
     self.url = data['url']
     self.site = data['site']
-    self.type = data['type']
+    self.types = data['types']
     self.visited_at = data['visited_at'] if 'visited_at' in data else None
     self.links = data['links']
 
@@ -218,6 +218,9 @@ class Page:
 
 class Pages:
   PAGES = []
+
+  KEYNAMES = ['id', 'uuid', 'url']
+  FIELDNAMES = ['id', 'uuid', 'url', 'created_at', 'site', 'types', 'visited_at', 'links']
 
   @classmethod
   def init(cls):
