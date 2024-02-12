@@ -70,6 +70,8 @@ def get_link_info_from_bs4(link):
 
 class Page:
   def __init__(self, url, domain=None):
+    self.id = None
+    self.created_at = None
     self.url = normalize_slash_url(url)
     self.uuid = None
     self.site = ''
@@ -145,11 +147,16 @@ class Page:
     }
 
   def initialize(self):
+    now = int(datetime.utcnow().timestamp())
+
+    self.created_at = now
     self.uuid = str(uuid.uuid4())
     self.site = get_site_from_url(self.url)
 
   def serialize(self):
     return {
+      "id": self.id,
+      "created_at": self.created_at,
       "uuid": self.uuid,
       "url": normalize_slash_url(self.url),
       "site": self.site,
@@ -159,6 +166,8 @@ class Page:
     }
 
   def objetivize(self, data):
+    self.id = data['id']
+    self.created_at = data["created_at"]
     self.uuid = data['uuid']
     self.site = data['site']
     self.type = data['type']
@@ -166,26 +175,95 @@ class Page:
     self.links = data['links']
 
   def save(self):
-    page_index = next((index for index, page in enumerate(PAGES) if page["url"] == self.url), None)
-    page_data = self.serialize()
-
-    if page_index is None:
-      PAGES.append(page_data)
-    else:
-      PAGES[page_index] = page_data
-
-    with open(PAGES_FILENAME, 'w') as f:
-      json.dump(PAGES, f, indent=2)
+    Pages.create(self)
 
   def load(self):
-    page_data = next((page for page in PAGES if page["url"] == normalize_slash_url(self.url)), None)
+    page_data = None
+
+    if self.id is not None:
+      page_data = Pages._get_data(id=self.id)
+    elif self.url is not None:
+      page_data = Pages._get_data(url=self.url)
 
     if page_data is None:
       self.initialize()
     else:
       self.objetivize(page_data)
 
-PAGES = []
 
-with open(PAGES_FILENAME, 'r') as f:
-  PAGES = json.load(f)
+
+class Pages:
+  PAGES = []
+
+  @classmethod
+  def init(cls):
+    with open(PAGES_FILENAME, 'r') as f:
+      cls.PAGES = json.load(f)
+
+  @classmethod
+  def get(cls, **kwargs):
+    raise BaseException("TODO: Not implemented!")
+
+  @classmethod
+  def list(cls):
+    raise BaseException("TODO: Not implemented!")
+
+  @classmethod
+  def create(cls, page):
+    if page.id is not None:
+      page_idx = cls._get_idx(id=page.id)
+      if page_idx is None:
+        raise BaseException("ERROR: Not found")
+
+      cls.PAGES[page_idx] = page.serialize()
+    else:
+      page_idx = cls._get_idx(url=page.url)
+      if page_idx is not None:
+        raise BaseException("ERROR: Duplicate")
+
+      page.id = cls._get_next_id()
+
+      cls.PAGES.append( page.serialize() )
+
+    cls.commit()
+
+  @classmethod
+  def change(cls, page):
+    cls.create(page)
+
+  @classmethod
+  def remove(cls, page):
+    raise BaseException("TODO: Not implemented!")
+
+  @classmethod
+  def _get_next_id(cls):
+    return 1+len(cls.PAGES)
+
+  @classmethod
+  def _get_idx(cls, **kwargs):
+    if 'id' in kwargs:
+      item = next((index for index, page in enumerate(cls.PAGES) if page["id"] == kwargs['id']), None)
+      return item
+
+    elif 'url' in kwargs:
+      item = next((index for index, page in enumerate(cls.PAGES) if page["url"] == normalize_slash_url(kwargs['url'])), None)
+      return item
+
+  @classmethod
+  def _get_data(cls, **kwargs):
+    if 'id' in kwargs:
+      item = next((page for page in cls.PAGES if page["id"] == kwargs['id']), None)
+      return item
+
+    elif 'url' in kwargs:
+      item = next((page for page in cls.PAGES if page["url"] == normalize_slash_url(kwargs['url'])), None)
+      return item
+
+  @classmethod
+  def commit(cls):
+    with open(PAGES_FILENAME, 'w') as f:
+      json.dump(cls.PAGES, f, indent=2)
+
+
+
+Pages.init()
