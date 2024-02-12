@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from pagesExplorer import PagesExplorer
-from wpcare.pages import Pages
+from crawlerlib.pages import Pages
 import sys
 
 
