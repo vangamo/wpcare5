@@ -224,8 +224,16 @@ class Pages:
 
   @classmethod
   def init(cls):
-    with open(PAGES_FILENAME, 'r') as f:
-      cls.PAGES = json.load(f)
+    try:
+      with open(PAGES_FILENAME, 'r') as f:
+        cls.PAGES = json.load(f)
+
+    except Exception as e:
+      print('ERROR reading pages.json')
+      print(e)
+
+      cls.PAGES = []
+      cls.commit()
 
   @classmethod
   def get(cls, **kwargs):
