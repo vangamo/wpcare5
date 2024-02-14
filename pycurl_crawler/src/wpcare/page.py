@@ -9,6 +9,9 @@ from datetime import datetime
 class Page:
   ADAPTER = None
 
+  FIELDNAMES = ['id', 'uuid', 'url', 'created_at', 'site', 'types']
+  KEYS = ['id', 'uuid', 'url']
+
   def __init__(self, url_or_id):
     if isinstance(url_or_id, str) or isinstance(url_or_id, int):
       if isinstance(url_or_id, int) or url_or_id.isdecimal():
@@ -22,7 +25,6 @@ class Page:
       self.uuid = None
       self.site = ''
       self.types = []
-      self.visited_at = None
 
       self.load()
 
@@ -57,8 +59,7 @@ class Page:
       "uuid": self.uuid,
       "url": normalize_slash_url(self.url),
       "site": self.site,
-      "types": self.types,
-      "visited_at": self.visited_at
+      "types": self.types
     }
 
   def objetivize(self, data):
@@ -68,7 +69,7 @@ class Page:
     self.url = data['url']
     self.site = data['site']
     self.types = data['types']
-    self.visited_at = data['visited_at'] if 'visited_at' in data else None
+    
 
   def save(self):
     self.ADAPTER.create(self)
@@ -77,9 +78,9 @@ class Page:
     page_data = None
 
     if self.id is not None:
-      page_data = self.ADAPTER._get_data(id=self.id)
+      page_data = self.ADAPTER._get_data_raw(id=self.id)
     elif self.url is not None:
-      page_data = self.ADAPTER._get_data(url=self.url)
+      page_data = self.ADAPTER._get_data_raw(url=self.url)
 
     if page_data is None:
       self.initialize()

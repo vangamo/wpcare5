@@ -7,14 +7,11 @@ from wpcare.jsonNamedCrud import JsonNamedCrud
 class Pages:
   MODEL_CLASS = Page
 
-  KEYNAMES = ['id', 'uuid', 'url']
-  FIELDNAMES = ['id', 'uuid', 'url', 'created_at', 'site', 'types', 'visited_at']
 
   @classmethod
   def init(cls):
     cls.MODEL_CLASS.ADAPTER = cls
-
-    cls.STORAGE = JsonNamedCrud('pages', Page, auto_commit=True, key_attr='id')
+    cls.STORAGE = JsonNamedCrud('pages', cls.MODEL_CLASS, auto_commit=True, key_attr='id')
 
 
 
@@ -76,7 +73,7 @@ class Pages:
 
 
   @classmethod
-  def _get_data(cls, **kwargs):
+  def _get_data_raw(cls, **kwargs):
     if 'id' in kwargs:
       item = cls.STORAGE.getRaw(id=kwargs['id'])
       return item

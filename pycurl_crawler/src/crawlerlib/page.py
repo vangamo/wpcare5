@@ -26,22 +26,29 @@ def get_link_info_from_bs4(link):
 
 
 class Page(WPCarePage):
+  FIELDNAMES = ['id', 'uuid', 'url', 'created_at', 'site', 'types', 'visited_at', 'links', "status_code"]
+  KEYS = ['id', 'uuid', 'url']
   
   def __init__(self, url_or_id):
-    self.links = {
-        "navigation": {
-          "internal_pages": [],
-          "internal_resources": [],
-          "external": [],
-          "other": []
-        },
-        "styles": [],
-        "scripts": [],
-        "images": []
-      }
-
     super().__init__(url_or_id)
+
+    if not hasattr(self, 'visited_at'):
+      self.visited_at = None
+    
+    if not hasattr(self, 'links'):
+      self.links = {
+          "navigation": {
+            "internal_pages": [],
+            "internal_resources": [],
+            "external": [],
+            "other": []
+          },
+          "styles": [],
+          "scripts": [],
+          "images": []
+        }
      
+
 
   def getLinks(self):
     now = int(datetime.utcnow().timestamp())
@@ -101,13 +108,13 @@ class Page(WPCarePage):
 
   def serialize(self):
     parent_data = super().serialize()
+    parent_data["visited_at"] = self.visited_at
     parent_data["links"] = self.links
 
     return parent_data
 
   def objetivize(self, data):
     super().objetivize(data)
-    
+
     self.links = data['links']
-
-
+    self.visited_at = data['visited_at'] if 'visited_at' in data else None
