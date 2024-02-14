@@ -7,7 +7,7 @@ class Pages(WPCarePages):
   PAGES = []
 
   KEYNAMES = ['id', 'uuid', 'url']
-  FIELDNAMES = ['id', 'uuid', 'url', 'created_at', 'site', 'types', 'visited_at', 'links']
+  FIELDNAMES = ['id', 'uuid', 'url', 'created_at', 'site', 'types', 'visited_at', 'links', "status_code"]
 
 
 Pages.init()
