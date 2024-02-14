@@ -1,5 +1,19 @@
 from wpcare.jsonCrud import JsonCrud, _check_parameters, _search_condition
 
+'''
+Methods:
+  - JsonNamedCrud( entity, entity_class, auto_commit?, key_attr )
+  - open()
+  - close()
+  - get(search)
+  - count(search)
+  - select(search)
+  - insert(data)
+  - update(search, data)
+  - delete(search)
+  - getRaw(search)
+'''
+
 class JsonNamedCrud(JsonCrud):
   def __init__(self, entity, entity_class, auto_commit=False, key_attr='id'):
     super().__init__(entity, auto_commit, key_attr)
@@ -12,6 +26,13 @@ class JsonNamedCrud(JsonCrud):
     data = super().get(*args, **kwargs)
 
     return self.entity_class(data) if data is not None else None
+  
+
+
+  def getRaw(self, *args, **kwargs):
+    data = super().get(*args, **kwargs)
+
+    return data
 
 
 

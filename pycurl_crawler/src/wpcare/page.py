@@ -2,7 +2,7 @@ from wpcare.utils import get_site_from_url, normalize_slash_url
 
 import uuid
 from datetime import datetime
-from bs4 import BeautifulSoup
+#from bs4 import BeautifulSoup
 
 
 

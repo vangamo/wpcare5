@@ -155,38 +155,3 @@ def _search_condition(data, item):
       return False
   else:
     return True
-
-if __name__ == "__main__":
-  testCrud = JsonCrud('test', auto_commit=True)
-
-  testCrud.insert({'id': 128, 'name': 'test 1', 'created_at': 1707908140, 'category': 'test'})
-  testCrud.insert({'name': 'test 2', 'created_at': 1707908280, 'category': 'test'})
-
-  print( testCrud.get({'id': 1, 'name': 'test 1'}) )
-  print( testCrud.get(id=2) )
-
-  print( list(testCrud.select(id=1) ) )
-  print( list(testCrud.select(category="test") ) )
-  print( list(testCrud.select({ "category": "test"} ) ) )
-
-  print( testCrud.count(id=1) )
-  print( testCrud.count(category="test") )
-  print( testCrud.count({ "category": "test"} ) )
-
-
-  testCrud.insert({'name': 'test to delete', 'created_at': 1707908512, 'category': 'test'})
-
-  print( list(testCrud.select() ) )
-
-  print( testCrud.delete(id=3) )
-
-  print( list(testCrud.select() ) )
-
-
-  testCrud.insert({'name': 'test to delete', 'created_at': 1707908512, 'category': 'test'})
-  testCrud.insert({'name': 'test to delete', 'created_at': 1707908512, 'category': 'test'})
-  testCrud.insert({'name': 'test to delete', 'created_at': 1707908512, 'category': 'test'})
-
-  print( testCrud.update( {'name': 'test to delete'}, {'name': 'test to update'} ))
-
-  print( list(testCrud.select() ) )
