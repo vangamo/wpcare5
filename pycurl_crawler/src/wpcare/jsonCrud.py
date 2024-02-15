@@ -95,7 +95,6 @@ class JsonCrud:
       new_item = dict(self.cache[idx], **data_update)
       self.cache[idx] = new_item
       updated_items.append(new_item)
-      print( 'UPDATE', new_item )
 
     if self.config['auto_commit']:
       self.commit()

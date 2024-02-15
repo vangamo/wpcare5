@@ -7,8 +7,10 @@ class Crawler:
   def __init__(self, url):
     self.url = url.replace(' ', '%20').encode('iso-8859-1')
     self.headers = {}
-    self.mime_type = None
+    self.content_type = None
     self.encoding = None
+    self.addr = None
+    self.effective_url = None
 
 
   def init_crawler(self):
@@ -34,6 +36,9 @@ class Crawler:
     self.headers = {} # TODO
     
     (http_response, *header_lines) = self._headers_buffer.getvalue().decode('utf-8').split('\r\n')
+    
+    self.http_response = http_response
+
     for header_line in header_lines:
       if header_line != '':
         (header_name, *header_value) = header_line.split(': ', maxsplit=1)
@@ -46,15 +51,10 @@ class Crawler:
         else:
           self.headers[header_name] = header_value
 
-    self.http_response = http_response
-    (http_version, response_code, response_text) = http_response.split(' ', maxsplit=2)
-    self.http_version = http_version.replace('HTTP/', '')
-    self.response_code = response_code
-    self.response_text = ''.join(response_text)
-
+    
     if 'content-type' in self.headers:
-        content_type = self.headers['content-type'].lower()
-        match = re.search('charset=(\S+)', content_type)
+        self.content_type = self.headers['content-type'].lower()
+        match = re.search('charset=(\S+)', self.content_type)
         if match:
             self.encoding = match.group(1)
             print('Decoding using %s' % self.encoding)
@@ -80,6 +80,9 @@ class Crawler:
 
     c.perform()
 
+    self.addr = c.getinfo(pycurl.PRIMARY_IP)#, c.getinfo(pycurl.IPRESOLVE_V4), c.getinfo(pycurl.IPRESOLVE_V6)
+    self.effective_url = c.getinfo(pycurl.EFFECTIVE_URL)
+
     self.retrieve_headers_info()
     self.retrieve_metrics()
     self.retrieve_content()
@@ -91,7 +94,21 @@ class Crawler:
     encoding = encoding or self.encoding or 'utf-8'
 
     return self.raw_html.decode(encoding)
+  
+  def get_headers(self):
+    return self.headers
 
+  def get_http_response(self):
+    return self.http_response
+
+  def get_encoding(self):
+    return self.encoding
+
+  def get_addr(self):
+    return self.addr
+  
+  def get_url(self):
+    return self.effective_url
 
 if __name__ == "__main__":
   url = 'https://nucep.com'

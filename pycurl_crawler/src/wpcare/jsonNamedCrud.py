@@ -102,7 +102,7 @@ class JsonNamedCrud(JsonCrud):
 
   def delete(self, *args, **kwargs):
     data = _check_parameters(args, kwargs)
-    print(data)
+
     if isinstance(data, self.entity_class):
       raw_data = data.serialize()
 
