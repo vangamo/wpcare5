@@ -1,18 +1,24 @@
-from wpcare.jsonNamedCrud import JsonNamedCrud
-#from wpcare.jsonCrud import JsonCrud
+from wpcare.base import ModelBase
+from wpcare.base import AdapterBase
 
-class Link():
-  ADAPTER = None
 
-  def __init__(self, data):
-    self.id = data['id'] if 'id' in data else None
-    self.href = data['href']
-    self.normalized_href = data['normalized_href']
-    self.type = data['type']
-    self.html = data['html']
-    self.css_selector = data['css_selector']
-    #self.path_selector = data['path_selector']
-    self.page_referrer = data['page_referrer']
+
+class Link(ModelBase):
+  FIELDNAMES = ['id', 'created_at', 'href', 'normalized_href', 'type', 'html', 'css_selector', 'page_referrer']
+  KEYS = ['id']
+
+
+  def __init__(self, id_or_data):
+    super().__init__(id_or_data)
+
+    if isinstance(id_or_data, dict):
+      self.id = id_or_data['id'] if 'id' in id_or_data else None
+      self.href = id_or_data['href']
+      self.normalized_href = id_or_data['normalized_href']
+      self.type = id_or_data['type']
+      self.html = id_or_data['html']
+      self.css_selector = id_or_data['css_selector']
+      self.page_referrer = id_or_data['page_referrer']
 
   def serialize(self):
     return {
@@ -22,58 +28,14 @@ class Link():
       'type': self.type,
       "html": self.html,
       "css_selector": self.css_selector,
-      #"path_selector": self.path_selector,
       "page_referrer": self.page_referrer,
     }
 
-class Links():
+
+
+class Links(AdapterBase):
   MODEL_CLASS = Link
-
-  @classmethod
-  def init(cls):
-    cls.MODEL_CLASS.ADAPTER = cls
-    cls.STORAGE = JsonNamedCrud('page-links', cls.MODEL_CLASS, auto_commit=True, key_attr='id')
-    #cls.STORAGE = JsonCrud('page-links', auto_commit=True, key_attr='id')
-
-  @classmethod
-  def get(cls, **kwargs):
-    raise BaseException("TODO: Not implemented!")
-
-  @classmethod
-  def list(cls, **kwargs):
-    raise BaseException("TODO: Not implemented!")
-
-  @classmethod
-  def create(cls, item):
-    if item.id is not None:
-      item_found = cls.STORAGE.get(id=item.id)
-
-      if item_found is None:
-        raise BaseException("ERROR: Not found")
-      
-      else:
-        cls.STORAGE.update({'id': item.id}, item)
-
-    else:
-      item_found = cls.STORAGE.get(href=item.href)
-
-      if item_found is None:
-        cls.STORAGE.insert(item)
-      
-      else:
-        cls.STORAGE.update({'href': item.href}, item)
-
-  @classmethod
-  def change(cls, page):
-    raise BaseException("TODO: Not implemented!")
-
-  @classmethod
-  def remove(cls, page):
-    raise BaseException("TODO: Not implemented!")
-
-  @classmethod
-  def _get_data_raw(cls, **kwargs):
-    raise BaseException("TODO: Not implemented!")
+  NAME = 'page-links'
 
 
 
