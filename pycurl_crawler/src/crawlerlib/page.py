@@ -47,6 +47,7 @@ class Page(WPCarePage):
     html = visit.get_html()
 
     self.url = visit.effective_url
+    self.visited_at = visit.visited_at
 
     self.analyze_html(html)
 

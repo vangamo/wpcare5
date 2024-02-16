@@ -1,10 +1,10 @@
 from datetime import datetime
 
 from crawlerlib.crawler import Crawler
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup # Remove
+from wpcare.base import ModelBase, AdapterBase
 
-
-def get_link_info_from_bs4(link):
+def get_link_info_from_bs4(link): # Remove
   selector_path = [link.name+('#'+link['id'] if 'id' in link else '')+(''.join('.'+c for c in link.get_attribute_list('class')) if len(link.get_attribute_list('class')) > 0 and link.get_attribute_list('class')[0] is not None else '')]
 
   for parent in link.parents:
@@ -20,25 +20,21 @@ def get_link_info_from_bs4(link):
     }
 
 
-class Visit():
-  def __init__(self, url):
-    self.url = url
-    self.visited_at = None
-    self.http_response = None
-    self.http_version = None
-    self.status_code = None
-    self.status_text = None
-    self.remote_ip4 = None
-    self.remote_ip6 = None
-    self.effective_url = url
-    self.content_length = None
-    self.content_type = None
-    self.content_encoding = None
-    self.cache_control = None
-    self.cache_expires = None
-    self.cache_last_modified = None
-    self.cache_date = None
-    self.other_headers = []
+class Visit(ModelBase):
+  ADAPTER = None
+
+  FIELDNAMES = ModelBase.FIELDNAMES + ['url', 'visited_at', 'http_response', 'http_version', 'status_code', 'status_text', 'remote_ip4', 'remote_ip6', 'effective_url', 'content_length', 'content_type', 'content_encoding', 'cache_control', 'cache_expires', 'cache_last_modified', 'cache_date', 'other_headers']
+  KEYS =  ModelBase.KEYS
+
+  def __init__(self, url_or_values):
+    if isinstance(url_or_values, dict) or isinstance(url_or_values, int):
+      super().__init__(url_or_values)
+
+    else:
+      super().__init__()
+
+      if isinstance(url_or_values, str):
+        self.url = url_or_values
 
     self._crawler = None
 
@@ -67,6 +63,7 @@ class Visit():
 
     self.retrieve_response_info()
     #soup = BeautifulSoup(html, 'html.parser')
+    self.save()
   
 
   def retrieve_response_info(self):
@@ -138,7 +135,7 @@ class Visit():
     pass
 
   def get_links(self):
-
+    pass
 
     '''
 
@@ -177,3 +174,10 @@ class Visit():
         "images":  [link.get('src') for link in soup.find_all('img') if link.get('src') is not None and link.get('src') != '' ]
     }
     '''
+
+
+class Visits(AdapterBase):
+  MODEL_CLASS = Visit
+  NAME = 'page-visits'
+
+Visits.init()

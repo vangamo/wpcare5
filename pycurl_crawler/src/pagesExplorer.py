@@ -1,5 +1,5 @@
 from crawlerlib.page import Page
-from crawlerlib.visit import Visit
+from crawlerlib.visit import Visit, Visits
 from crawlerlib.links import Link, Links
 
 from wpcare.utils import normalize_slash_url # Remove?
@@ -52,7 +52,17 @@ class PagesExplorer:
   def visit_url(self, visiting_url):
     if VERBOSE: print()
     if VERBOSE: print('VISITING', visiting_url)
-    visited_link = Visit( visiting_url )
+
+    # TODO: Visit url or visit effective_url must be key?
+
+    visited_link = Visits.list(url=visiting_url)
+
+    try:
+      *_, visited_link = visited_link  # last item (like .pop() for generators)
+
+    except:
+      # No elements, create one
+      visited_link = Visit( visiting_url )
 
     mime = visited_link.get_mime_type()
 

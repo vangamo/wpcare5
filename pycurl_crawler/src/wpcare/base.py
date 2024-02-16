@@ -9,22 +9,18 @@ class ModelBase():
   ADAPTER = None
 
   FIELDNAMES = ['id', 'created_at']
-  KEYS = ['id', 'created_at']
+  KEYS = ['id']
 
 
 
-  def __init__(self, identifier):
-    raise BaseException("TODO: Not implemented!")
+  def __init__(self, identifier_or_data=None):
+    self.initialize()
 
+    if identifier_or_data is None:
+      self.id = None
 
-  def __init__(self, identifier_or_data):
-    if isinstance(identifier_or_data, int) or (isinstance(identifier_or_data, int) and identifier_or_data.isdecimal()):
+    elif isinstance(identifier_or_data, int) or (isinstance(identifier_or_data, int) and identifier_or_data.isdecimal()):
       self.id = int(identifier_or_data)
- 
-      self.created_at = None
-      if 'uuid' in self.FIELDNAMES:
-        self.uuid = None
-      
       self.load()
 
     elif isinstance(identifier_or_data, dict):
@@ -35,48 +31,51 @@ class ModelBase():
 
 
 
+  '''
+    Set default values to object attributes
+  '''
   def initialize(self):
+    for field in self.FIELDNAMES:
+      setattr(self, field, None)
+
     now = int(datetime.utcnow().timestamp())
 
     self.created_at = now
-    if 'uuid' in self.FIELDNAMES:
-      self.uuid = str(uuid.uuid4())
 
 
 
-  def serialize(self):
-    data_object = {
-      "id": self.id,
-      "created_at": self.created_at,
-    }
+  def serialize(self):  # TODO: Add field types
+    data_object = {}
 
-    if 'uuid' in self.FIELDNAMES:
-      data_object["uuid"] = self.uuid
+    for field in self.FIELDNAMES:
+      data_object[field] = getattr(self, field)
 
     return data_object
 
 
-  def objetivize(self, data):
-    self.id = data['id'] if 'id' in data else None
-    self.created_at = data["created_at"] if 'created_at' in data else None
 
-    if 'uuid' in self.FIELDNAMES:
-      self.uuid = data['uuid']
-
+  def objetivize(self, data):  # TODO: Add field types
+    for field in self.FIELDNAMES:
+      setattr(self, field, data[field] if field in data else None)
     
 
+
   def save(self):
+    if self.ADAPTER is None:
+      raise BaseException("CONFIG ERROR: No adapter configured")
+
     self.ADAPTER.create(self)
 
 
 
   def load(self):
+    if self.ADAPTER is None:
+      raise BaseException("CONFIG ERROR: No adapter configured")
+
     item_data = None
 
     if self.id is not None:
       item_data = self.ADAPTER._get_data_raw(id=self.id)
-    #elif self.url is not None:
-    #  item_data = self.ADAPTER._get_data_raw(url=self.url)
 
     if item_data is None:
       self.initialize()
@@ -120,6 +119,7 @@ class AdapterBase():
     return item_list
 
 
+
   @classmethod
   def create(cls, item):
     if item is None:
@@ -136,6 +136,8 @@ class AdapterBase():
           break
 
     except:
+      if 'uuid' in item.FIELDNAMES:
+        item.uuid = str(uuid.uuid4())
       cls.STORAGE.insert(item)
       return
 
@@ -166,6 +168,8 @@ class AdapterBase():
 
     cls.STORAGE.delete({identifier: identifier_value})
 
+
+
   @classmethod
   def _get_data_raw(cls, **kwargs):
     for key in cls.MODEL_CLASS.KEYS:
@@ -180,6 +184,7 @@ class AdapterBase():
     return item
 
 
+
   @classmethod
   def _check_params_are_fields(cls, kwargs):
     field_set = set(cls.MODEL_CLASS.FIELDNAMES)
@@ -191,6 +196,8 @@ class AdapterBase():
       raise BaseException("DATA ERROR: Field unexpected ("+str(unknown_fields)+")")
     elif len(unknown_fields) > 1:
       raise BaseException("DATA ERROR: Fields unexpected ("+str(unknown_fields)+")")
+
+
 
   @classmethod
   def _get_key_fields_from_params(cls, kwargs):
