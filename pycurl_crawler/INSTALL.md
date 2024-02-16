@@ -21,24 +21,15 @@ cd pycurl_crawler
 source bin/activate
 ```
 
+Installing scrapping libraries
+
+```bash
+pip install selenium
+```
+
+
+
 Installing libraries
-
-```bash
-pip install pycurl certifi
-```
-
-This library is a wrapper for lib-curl (and curl command). In some contexts (like Ubuntu), it depends on libssl-dev dependency.
-When this happens, using this library causes the following error:
-
-```text
-Error "FileNotFoundError: [Errno 2] No such file or directory: 'curl-config'" installing pyCurl
-```
-
-It's necessary install some apt packages (solution found in [Stack overflow](https://stackoverflow.com/questions/23937933/could-not-run-curl-config-errno-2-no-such-file-or-directory-when-installing)):
-
-```bash
-sudo apt install libcurl4-openssl-dev libssl-dev
-```
 
 ```bash
 pip install beautifulsoup4

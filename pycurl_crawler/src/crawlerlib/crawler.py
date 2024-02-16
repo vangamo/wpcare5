@@ -1,99 +1,121 @@
-import pycurl
-import certifi
-from io import BytesIO
-import re
+from datetime import datetime
+import time
+import os
+from random import random
+import atexit
+
+from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
+#from selenium.webdriver.chrome.options import Options
+
 
 class Crawler:
+  driver = None
+  last_use = 0
+
+  @classmethod
+  def get_driver(cls):
+    now = int(datetime.utcnow().timestamp())
+
+    if cls.driver is None:
+      options = Options()
+      options.add_argument("--headless")
+
+      cls.driver = webdriver.Firefox(options=options)
+
+      atexit.register(cls.close)
+
+    if now - cls.last_use < 1000:
+      time.sleep(random()*9)
+
+    return cls.driver
+  
+
+
+  @classmethod
+  def close(cls):
+    print('Closing')
+    cls.driver.close()
+
+
+
   def __init__(self, url):
-    self.url = url.replace(' ', '%20').encode('iso-8859-1')
+    self.url = url.replace(' ', '%20')
     self.headers = {}
     self.content_type = None
     self.encoding = None
     self.addr = None
     self.effective_url = None
+    self.http_response = None
 
 
   def init_crawler(self):
-    self._content_buffer = BytesIO()
-    self._headers_buffer = BytesIO()
-    c = pycurl.Curl()
+    #options = Options()
+    #options.add_argument("--headless")
+    #driver = webdriver.Firefox(options=options)
+    #driver = webdriver.Firefox(options=options, service_log_path=os.devnull)  # Avoid log file
 
-    c.setopt(c.URL, self.url)
-    c.setopt(c.WRITEDATA, self._content_buffer)
-    c.setopt(c.HEADERFUNCTION, self._headers_buffer.write)
-    c.setopt(c.CAINFO, certifi.where())
-    c.setopt(c.FOLLOWLOCATION, True)
-    #c.setopt(c.VERBOSE, True)
-    #agent = "Mozilla/5.0 (Windows NT 5.1; rv:33.0) Gecko/20100101 Firefox/33.0"
-    #c.setopt(c.USERAGENT, agent)
+    #chromeOptions = Options()
+    #chromeOptions.add_argument("--headless=new")
+    #driver = webdriver.Chrome(options=chromeOptions, keep_alive=False)
 
-    return c
+    return Crawler.get_driver()
 
 
-  def retrieve_headers_info(self):
+  def retrieve_headers_info(self, driver):
     # Figure out what encoding was sent with the response, if any.
     # Check against lowercased header name.
-    self.headers = {} # TODO
+    #self.headers = {} # TODO
+         
+    #self.http_response = http_response
     
-    (http_response, *header_lines) = self._headers_buffer.getvalue().decode('utf-8').split('\r\n')
-    
-    self.http_response = http_response
+    #self.content_type = self.headers['content-type'].lower()
+    #self.encoding is None:
 
-    for header_line in header_lines:
-      if header_line != '':
-        (header_name, *header_value) = header_line.split(': ', maxsplit=1)
-        header_name = header_name.lower()
-        header_value = ''.join(header_value)
-        if 'set-cookie' == header_name:
-          if 'set-cookie' not in self.headers:
-            self.headers['set-cookie'] = []  
-          self.headers['set-cookie'].append(header_value)
-        else:
-          self.headers[header_name] = header_value
+    self.http_response = 'HTTP/1.2 200 Ok'
+    self.encoding = driver.execute_script("return document.characterSet || document.charset").lower()
+    self.content_type = driver.execute_script("return document.contentType")+'; '+self.encoding
+    self.headers = {
+      'content-type': self.content_type
+    }
 
+    self.effective_url = driver.execute_script("return window.location.href")
     
-    if 'content-type' in self.headers:
-        self.content_type = self.headers['content-type'].lower()
-        match = re.search('charset=(\S+)', self.content_type)
-        if match:
-            self.encoding = match.group(1)
-            print('Decoding using %s' % self.encoding)
-    if self.encoding is None:
-        # Default encoding for HTML is iso-8859-1.
-        # Other content types may have different default encoding,
-        # or in case of binary data, may have no encoding at all.
-        self.encoding = 'utf-8'
-        print('Assuming encoding is %s' % self.encoding)
 
 
   def retrieve_metrics(self):
     pass # TODO
 
 
-  def retrieve_content(self):
+  def retrieve_content(self, driver):
     #retrieve the content BytesIO
-    self.raw_html = self._content_buffer.getvalue()
+    #self.raw_html = driver.execute_script("return document.documentElement.outerHTML")
+    #self.raw_html = driver.execute_async_script()
+    self.raw_html = driver.execute_script("return document.documentElement.outerHTML")
+    
 
 
   def perform(self):
-    c = self.init_crawler()
+    driver = self.init_crawler()
 
-    c.perform()
+    driver.get(self.url)
 
-    self.addr = c.getinfo(pycurl.PRIMARY_IP)#, c.getinfo(pycurl.IPRESOLVE_V4), c.getinfo(pycurl.IPRESOLVE_V6)
-    self.effective_url = c.getinfo(pycurl.EFFECTIVE_URL)
+    self.addr = 'IP'
+    self.effective_url = ''
 
-    self.retrieve_headers_info()
+    self.retrieve_headers_info(driver)
     self.retrieve_metrics()
-    self.retrieve_content()
+    self.retrieve_content(driver)
 
-    c.close()    
+    #driver.quit()
 
 
   def get_html(self, encoding = None):
-    encoding = encoding or self.encoding or 'utf-8'
+    #encoding = encoding or self.encoding or 'utf-8'
 
-    return self.raw_html.decode(encoding)
+    #return self.raw_html.decode(encoding)
+
+    return self.raw_html
   
   def get_headers(self):
     return self.headers
@@ -111,14 +133,20 @@ class Crawler:
     return self.effective_url
 
 if __name__ == "__main__":
-  url = 'https://nucep.com'
+  url = 'https://python.org/'
+  url = 'https://books.adalab.es/materiales-del-curso-a-pt/'
 
-  try:
-    crawler = Crawler(url)
-    crawler.perform()
-    html = crawler.get_html()
+  crawler = Crawler(url)
+  crawler.perform()
+  html = crawler.get_html()
+  print(html)
 
-    print(html)
-  except Exception as e:
-    print('ERROR getting ' + url)
-    print(e)
+  #try:
+  #  crawler = Crawler(url)
+  #  crawler.perform()
+  #  html = crawler.get_html()
+  #
+  #  print(html)
+  #except Exception as e:
+  #  print('ERROR getting ' + url)
+  #  print(e)
