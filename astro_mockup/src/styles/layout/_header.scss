@@ -1,0 +1,49 @@
+.header {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 2;
+  height: $height_header;
+
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+
+  background-color: #fff;
+
+  
+  &__title {
+    margin-left: .5rem;
+    width: 12rem;
+
+    font-size: 1rem;
+    font-weight: 800;
+  }
+  
+  .btn-icon {
+    margin-left: .5rem;
+    order: 0
+  }
+
+  .mobile,.tablet,.desktop {
+    display: none;
+  }
+
+  @include mobile_only {
+    .mobile {
+      display: block;
+    }
+  }
+  @include tablet {
+    .tablet {
+      display: block;
+    }
+  }
+  @include desktop {
+    .desktop {
+      display: block;
+    }
+  }
+}

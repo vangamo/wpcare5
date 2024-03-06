@@ -1,0 +1,13 @@
+.sidenav {
+  width: $width_sidenav;
+  height: 100vh;
+  z-index: 0;
+
+  font-size: .9rem;
+
+  &__menu {
+    height: calc( 100vh - $height_header - $height_loginbox );
+    transform: translateY($height_header);
+    overflow: hidden scroll;
+  }
+}

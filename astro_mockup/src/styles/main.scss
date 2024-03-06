@@ -1,1 +1,9 @@
 @import './core/reset';
+@import './core/mixins';
+@import './core/measures';
+@import './core/colors';
+@import './core/effects';
+@import './core/layout';
+
+@import './layout/header';
+@import './layout/navigation';

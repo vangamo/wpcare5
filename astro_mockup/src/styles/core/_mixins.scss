@@ -1,0 +1,27 @@
+$tablet_breakpoint: 768px;
+$desktop_breakpoint: 1280px;
+
+
+@mixin mobile_only() {
+  @media screen and (max-width: $tablet_breakpoint) {
+    @content;
+  }
+}
+
+@mixin tablet() {
+  @media screen and (min-width: $tablet_breakpoint) and (orientation: portrait) {
+    @content;
+  }
+  @media screen and (orientation: landscape) {
+    @content;
+  }
+}
+
+@mixin desktop() {
+  @media screen and (min-width: $desktop_breakpoint) {
+    @content;
+  }
+  @media screen and (min-width: $tablet_breakpoint) and (orientation: landscape) {
+    @content;
+  }
+}
