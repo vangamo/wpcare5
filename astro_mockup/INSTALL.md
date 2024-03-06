@@ -30,6 +30,14 @@ bunx create-astro@latest astro_mockup --template minimal
 
 ( Cool Astro template to look in -> [FlowBite](https://astro.build/themes/details/flowbite/) )
 
+## Add Sass
+
+<https://docs.astro.build/en/guides/styling/#sass-and-scss>
+
+```bash
+bun install -d sass
+```
+
 ## Run project
 
 ```bash
@@ -41,12 +49,4 @@ bunx --bun astro dev
 
 ```bash
 bunx --bun astro build
-```
-
-## Add Sass
-
-<https://docs.astro.build/en/guides/styling/#sass-and-scss>
-
-```bash
-bun install -d sass
 ```
