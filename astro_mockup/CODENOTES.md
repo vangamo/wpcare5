@@ -6,7 +6,7 @@
 
 Each page of the site is a file inside `./src/pages` dir.
 
-This files must have 2 sections: 
+This files must have 2 sections:
 
 - First section between the first `---` and the second (and last) `---` belongs to JavaScript code.
 - Second section (after the second `---`) is for HTML code.
@@ -47,3 +47,22 @@ and then, used like an HTML elemento (JSX style!):
     <Component>
   </some_html_code>
 ```
+
+## Layout files
+
+Layout are like pages too. You can create them into `./src/layouts/` dir. Also have two sections.
+
+Layout files must be imported and used like a HTML element (like components).
+
+You can pass parameters to layouts using HTML attributes. That parameters are collected into `Astro.props` global object inside the Layout file:
+
+```astro
+---
+const { param1, param2 } = Astro.props;
+```
+
+In reality, layout files are components!
+
+## Posts
+
+Not used yet.
