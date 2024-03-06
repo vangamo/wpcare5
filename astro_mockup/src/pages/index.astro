@@ -1,22 +1,32 @@
 ---
-
+import '../styles/main.scss';
 ---
 
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<style lang="scss">
+			.menu {
+				&__list {
+					display: flex;
+					list-style-type: none;
+				}
+			}
+		</style>
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
 		<title>WPCare</title>
 	</head>
 	<body>
 		<h1>WPCare</h1>
-		<nav>
-		<ul>
+		<nav class="menu">
+		<ul class="menu__list">
 		<li><a href="/">Home</a></li>
 		<li><a href="/about">About us</a></li>
 		</ul>
 		</nav>
+		<main>
+		</main>
 	</body>
 </html>

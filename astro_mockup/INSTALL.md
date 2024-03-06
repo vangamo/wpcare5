@@ -42,3 +42,11 @@ bunx --bun astro dev
 ```bash
 bunx --bun astro build
 ```
+
+## Add Sass
+
+<https://docs.astro.build/en/guides/styling/#sass-and-scss>
+
+```bash
+bun install -d sass
+```
