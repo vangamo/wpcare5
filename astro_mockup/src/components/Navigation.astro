@@ -1,11 +1,27 @@
 ---
+
+const menu = [
+  {
+    name: 'Home',
+    icon: 'house',
+    link: '/'
+  },
+  {
+    name: 'About us',
+    icon: 'people',
+    link: '/about'
+  }
+]
 ---
 
 <section class="sidenav shadow-right">
   <nav class="sidenav__menu">
     <ul>
-      <li><a href="/">Home</a></li>
-      <li><a href="/about">About us</a></li>
+      {
+        menu.map( menuitem =>
+        <li><a href={menuitem.link} class="sidenav__menulink">{menuitem.name}</a></li>
+        )
+      }
     </ul>
   </nav>
 </section>

@@ -10,4 +10,13 @@
     transform: translateY($height_header);
     overflow: hidden scroll;
   }
+
+  &__menulink {
+    display: flex;
+    align-items: center;
+    padding: .75rem 1rem;
+    color: #000000;
+    text-decoration: none;
+    cursor: pointer;
+  }
 }
