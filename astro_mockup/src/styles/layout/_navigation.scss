@@ -19,4 +19,31 @@
     text-decoration: none;
     cursor: pointer;
   }
+
+
+&__footer {
+  height: $height_loginbox;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  padding: .75rem;
+  
+  font-size: .9rem;
+  background-color: rgba(33,40,50,.05);
+  color: #212832;
+  
+  transform: translateY($height_header);
+
+  &--subtitle {
+    font-size: .75rem;
+    font-weight: 300
+  }
+  
+  &--title {
+    font-size: .9rem
+  }
+}
+
+
 }
