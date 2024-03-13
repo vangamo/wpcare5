@@ -2,3 +2,35 @@ $height_header: 3.625rem;
 $height_loginbox: 3rem;
 $height_gradient_background: 16rem;
 $width_sidenav: 15rem;
+
+@font-face {
+  font-family: 'Metropolis';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url('/styles/fonts/Metropolis-Regular.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Metropolis';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/styles/fonts/Metropolis-Medium.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Metropolis';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/styles/fonts/Metropolis-Bold.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Metropolis';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url('/styles/fonts/Metropolis-Black.otf') format('opentype');
+}
