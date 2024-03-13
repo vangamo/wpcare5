@@ -1,6 +1,7 @@
 ---
 import Navigation from '../components/Navigation.astro';
 import '../styles/main.scss';
+import { MenuIcon, SearchIcon } from 'astro-feather';
 
 const { pageTitle, name = '', description='' } = Astro.props;
 ---
@@ -15,15 +16,17 @@ const { pageTitle, name = '', description='' } = Astro.props;
   </head>
   <body class="app">
     <header class="header">
-      <button class="btn btn-icon">MENU x24</button>
+      <button class="btn btn-icon">
+        <MenuIcon size="24"/>
+      </button>
       <a href="/">
         <h1 class="header__title">WPCare</h1>
       </a>
 
       <form>
-        <div class="inputgroup all">
-          <input class="inputgroup--input" type="text" name="search" id="header_search">
-          ICON Search x16
+        <div class="inputgroup">
+          <input class="inputgroup--input" type="text" name="search" id="header_search" placeholder="Buscar...">
+          <SearchIcon size="16" />
         </div>
       </form>
       

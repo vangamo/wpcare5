@@ -66,3 +66,23 @@ In reality, layout files are components!
 ## Posts
 
 Not used yet.
+
+## Icons
+
+For Astro, I'll use astro-feather <https://github.com/gabrlyg/astro-feather/tree/master>
+
+Install:
+
+```bash
+bun add astro-feather
+```
+
+Use: 
+
+```astro
+---
+// import only what you need
+import { FeatherIcon } from 'astro-feather';
+---
+<FeatherIcon />
+```

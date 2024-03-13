@@ -10,7 +10,8 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^4.4.12"
+    "astro": "^4.4.12",
+    "astro-feather": "^1.0.0"
   },
   "devDependencies": {
     "sass": "^1.71.1"
