@@ -11,15 +11,15 @@ const menu = [
     icon: 'people',
     link: '/about'
   }
-]
+];
 ---
 
-<section class="sidenav shadow-right">
+<section class="sidenav shadow-right js__sidenav">
   <nav class="sidenav__menu">
     <ul>
       {
         menu.map( menuitem =>
-        <li><a href={menuitem.link} class="sidenav__menulink">{menuitem.name}</a></li>
+          <li><a href={menuitem.link} class="sidenav__menulink">{menuitem.name}</a></li>
         )
       }
     </ul>
@@ -29,3 +29,15 @@ const menu = [
     <dd class="sidenav__footer--title">Christine de Pizan</dd>
   </dl>
 </section>
+<script>
+  const nav = document.querySelector('.js__sidenav');
+  const menuIcon = document.querySelector('.js__menuicon')
+
+  const handleClickMenuButton = (ev) => {
+    ev.preventDefault();
+    nav.classList.toggle('hidden');
+    menuIcon.blur();
+  }
+
+  menuIcon.addEventListener('click', handleClickMenuButton);
+</script>
