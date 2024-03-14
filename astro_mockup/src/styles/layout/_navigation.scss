@@ -5,7 +5,7 @@
 
   font-size: .9rem;
 
-  
+
   &.hidden {
     transform: translateX(-100%);
   }
@@ -19,6 +19,16 @@
     height: calc( 100vh - $height_header - $height_loginbox );
     transform: translateY($height_header);
     overflow: hidden scroll;
+  }
+
+  &__menuheading {
+    padding: 1.75rem 1rem .75rem;
+
+    color: #a7aeb8;
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
   }
 
   &__menulink {

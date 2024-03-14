@@ -1,12 +1,32 @@
 [
   {
-    "name": "Home",
-    "icon": "house",
-    "link": "/"
+    "name": "WP-Care",
+    "items": [
+      {
+        "name": "Home",
+        "icon": "house",
+        "link": "/"
+      },
+      {
+        "name": "About us",
+        "icon": "people",
+        "link": "/about"
+      }
+    ]
   },
   {
-    "name": "About us",
-    "icon": "people",
-    "link": "/about"
+    "name": "Overview",
+    "items": [
+      {
+        "name": "Sites",
+        "icon": "globe",
+        "link": "/sites"
+      },
+      {
+        "name": "Pages",
+        "icon": "file",
+        "link": "/pages"
+      }
+    ]
   }
 ]

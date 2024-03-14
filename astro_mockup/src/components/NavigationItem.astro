@@ -1,0 +1,14 @@
+---
+const {menu} = Astro.props;
+---
+
+<div class="sidenav__menuheading">{menu.name}</div>
+<ul>
+  {
+    menu.items.map( menuitem =>
+      <li>
+        <a href={menuitem.link} class="sidenav__menulink">{menuitem.name}</a>
+      </li>
+    )
+  }
+</ul>
