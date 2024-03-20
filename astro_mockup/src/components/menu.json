@@ -18,6 +18,11 @@
     "name": "Overview",
     "items": [
       {
+        "name": "Dashboard",
+        "icon": "layout",
+        "link": "/dashboard"
+      },
+      {
         "name": "Sites",
         "icon": "globe",
         "link": "/sites"
