@@ -1,0 +1,28 @@
+---
+const checkCols = (cols) => {
+  if( !cols ) {
+    console.warn('Cols in rows must be declared.');
+    return false;
+  }
+
+  if( isNaN(parseInt(cols)) ) {
+    console.warn('Cols in rows must be a number.');
+    return false;
+  }
+  
+  if( cols < 1 || cols > 4 ) {
+    console.warn('Cols in rows must be a number between 1 and 4.');
+    return false;
+  }
+
+  return true;
+}
+
+const { cols } = Astro.props;
+
+const htmlCols = checkCols(cols) ? parseInt(cols) : 1;
+---
+
+<div class={"row-"+htmlCols}>
+  <slot />
+</div>
