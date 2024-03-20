@@ -1,5 +1,6 @@
 ---
 import Navigation from '../components/Navigation.astro';
+import PageHeader from '../components/PageHeader.astro';
 import '../styles/main.scss';
 import { MenuIcon, SearchIcon } from 'astro-feather';
 
@@ -36,17 +37,11 @@ const { pageTitle, name = '', description='' } = Astro.props;
     
     <main class="main">
       <section class={name}>
-        <div class="main__background"></div>
-        <div class="main__wrapper">
-          <div class="main__header">
-            <h2 class="main__title">{pageTitle}</h2>
-            <p class="main__description">{description}</p>
-          </div>
-          <div class="content">
+        <PageHeader pageTitle={pageTitle} name={name}, description={description} />
+        <div class="content">
 
-            <slot />
+          <slot />
 
-          </div>
         </div>
       </section>
     </main>

@@ -1,0 +1,11 @@
+---
+import './PageHeader.scss';
+
+const { pageTitle, name = '', description='' } = Astro.props;
+---
+
+<div class="pageheader__background"></div>
+<div class="pageheader">
+  <h2 class="pageheader__title">{pageTitle}</h2>
+  <p class="pageheader__description">{description}</p>
+</div>

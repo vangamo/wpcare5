@@ -1,0 +1,33 @@
+$height_gradient_background: 16rem;
+$color_header_title: #ffffff;
+$color_header_content: #ffffff80; 
+
+.pageheader {
+  width: 86%;
+  max-width: 1400px;
+  margin: 2rem auto;
+  color: $color_header_content;
+
+  &__background {
+    position: absolute;
+    z-index: -1;
+    width: 100%;
+    height: $height_gradient_background;
+    margin-top: -2rem;
+
+    background-color: #0061f2;
+    background-image: linear-gradient(135deg,#0061f2,rgba(105,0,199,.8))!important;
+  }
+ 
+  &__title {
+    color: $color_header_title;
+    font-size: 2.25rem;
+    font-weight: 500;
+  }
+  
+  &__description {
+    margin-top: .25rem;
+    font-weight: 400;
+    font-size: 1.15rem;
+  }
+}

@@ -17,16 +17,6 @@
   color: hsla(0,0%,100%,.5);
   transition: left .15s ease-in-out, width .15s ease-in-out;
 
-
-  &__background {
-    width: 100%;
-    height: $height_gradient_background;
-    position: absolute;
-    z-index: -1;
-
-    background-color: #0061f2!important;
-    background-image: linear-gradient(135deg,#0061f2,rgba(105,0,199,.8))!important;
-  }
 }
 
 
