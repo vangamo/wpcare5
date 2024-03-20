@@ -2,15 +2,17 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Row from '../components/ContentRow.astro';
 import Box from '../components/ContentBox.astro';
+import Table from '../components/Table.astro';
+
 const pageTitle = "Header for Dashboard";
 ---
 
 <BaseLayout pageTitle={pageTitle} name="dashboard" description="Subtitle for dashboard including a brief explanation.">
   
-  <Row cols="1">
+  <Row cols="2">
     <Box title="Box title: Sites">
       <p>Content</p>
-      <table></table>
+      <Table></Table>
     </Box>
   </Row>
 

@@ -1,0 +1,39 @@
+---
+import './Table.scss';
+
+---
+
+<table class="magictable">
+  <caption>mes</caption>
+  <thead>
+    <tr>
+      <th class="important" scope="col">Site</th>
+      <th scope="col">URL</th>
+      <th class="important" scope="col">Pages</th>
+      <th scope="col">Client</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Python site</th>
+      <td><a href="https://python.org">python.org</a></td>
+      <td>23</td>
+      <td>Python software foundation</td>
+    </tr>
+    <tr>
+      <th scope="row">Wordpress site</th>
+      <td><a href="https://wordpress.org">wordpress.org</a></td>
+      <td>12</td>
+      <td>Automattic, Inc</td>
+    </tr>
+    <tfoot>
+      <tr>
+        <td class="magictable__pagination" colspan="4">
+          <button class="pagination__button">&lt;</button>
+          <button class="pagination__button active">1</button>
+          <button class="pagination__button">&gt;</button>
+        </td>
+      </tr>
+    </tfoot>
+  </tbody>
+</table>

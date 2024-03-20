@@ -1,0 +1,76 @@
+.magictable {
+  line-height: 2em;
+  border-collapse: collapse;
+  text-align: left;
+
+  caption {
+    caption-side: bottom;
+    display: none;
+  }
+
+  thead tr th {
+    font-weight: 600;
+    border-bottom: solid #000 2px;
+  }
+
+  th:first-child, td:first-child {
+    padding-left: .5em;
+  }
+  th:last-child, td:last-child {
+    padding-right: .5em;
+  }
+
+  tbody th {
+    font-weight: 400;
+  }
+
+  tbody tr:nth-child(2n+1) {
+    background-color: #dae7fb;
+    background-color: #ecf0f6;
+    background-color: #eef2f8;
+  }
+
+  tr {
+    container-type: inline-size;
+    container-name: row;
+  }
+
+
+
+  .magictable__pagination {
+    padding-top: 1em;
+  
+    .pagination__button {
+      width: 2em;
+      height: 2em;
+      margin: 0;
+      padding: 0;
+      float: left;
+      margin-right: -1px;
+
+      border: solid 1px rgba(33, 40, 50, 0.25);
+      border: solid 1px #21283240;
+
+      background-color: transparent;
+    }
+
+    .pagination__button.active {
+      color: #fff;
+      background-color: #0061f2;
+    }
+  }
+}
+
+/* Three items <https://stackoverflow.com/questions/8720931/can-css-detect-the-number-of-children-an-element-has#answer-12198561> */
+.magictable tfoot td button:first-child:nth-last-child(3),
+.magictable tfoot td button:first-child:nth-last-child(3) ~ button {
+  display: none;
+}
+
+
+
+@container row (max-width: 400px) {
+  th:not(.important) {
+    display: none;
+  }
+}
