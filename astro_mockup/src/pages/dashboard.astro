@@ -4,6 +4,21 @@ import Row from '../components/ContentRow.astro';
 import Box from '../components/ContentBox.astro';
 import Table from '../components/Table.astro';
 
+import SITES_DATA from '../data/sites.json';
+const COLUMNS = [
+  {name: 'Site', property: 'name', importance: 1 },
+  {name: 'URL', property: 'homepage', importance: 2 },
+  {name: 'Pages', property: 'pages', importance: 1 },
+  {name: 'Client', property: 'client', importance: 1 }
+];
+
+const sites = SITES_DATA.map( s => ({
+  name: s.name,
+  homepage: s.homepage,
+  pages: 42,
+  client: s.client
+}))
+
 const pageTitle = "Header for Dashboard";
 ---
 
@@ -12,7 +27,7 @@ const pageTitle = "Header for Dashboard";
   <Row cols="2">
     <Box title="Box title: Sites">
       <p>Content</p>
-      <Table></Table>
+      <Table data={sites} columns={COLUMNS}></Table>
     </Box>
   </Row>
 

@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "name": "Python site",
+    "domain": "python.org",
+    "homepage": "https://python.org/",
+    "type": null,
+    "hosting": null,
+    "client": "Python software foundation",
+    "created_at": "2024-03-19T11:47:35.983Z"
+  },
+  {
+    "id": 2,
+    "name": "Wordpress site",
+    "domain": "wordpress.org",
+    "homepage": "https://wordpress.org/",
+    "type": "WP",
+    "hosting": null,
+    "client": "Automattic, Inc",
+    "created_at": "2024-03-20T11:51:05.029Z"
+  },
+  {
+    "id": 3,
+    "name": "VanGamo page",
+    "domain": "igarrido.es",
+    "homepage": "https://igarrido.es/",
+    "type": "Custom",
+    "hosting": "Ionos",
+    "client": "I. Van Gamo",
+    "created_at": "2024-03-21T11:54:05.192Z"
+  }
+]
