@@ -6,3 +6,7 @@ For testing:
 - iniconfig
 - packaging
 - pluggy
+
+For database:
+
+- psycopg2-binary

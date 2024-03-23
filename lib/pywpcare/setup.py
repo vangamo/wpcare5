@@ -10,5 +10,5 @@ setup(
   author='vanGamo',
   author_email='vangamo.beta@gmail.com',
   packages=['pywpcare'],  # same as name
-  install_requires=['wheel']
+  install_requires=['wheel', 'psycopg2-binary']
   )

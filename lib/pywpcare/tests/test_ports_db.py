@@ -1,13 +1,15 @@
 import sys
 import os
 
-print(os.path.dirname(os.path.realpath(__file__)) + "/..")
 sys.path.append(os.path.dirname(os.path.realpath(__file__)) + "/../")
-from pywpcare.models.site import Site
+
+from pywpcare.ports.db.db import *
 
 class TestSiteClass():
 
-  def test_init(self):
-    result = Site()
+  def test_connection(self):
+    assert DB.get_connection is not None
+    
+    result = DB.get_connection()
 
     assert result is not None
