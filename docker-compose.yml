@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend.Dockerfile
+    ports:
+      - '4321:4321'
+
+    volumes:
+##      - "./astro_frontend:/usr/src/app" # Files and dirs has the same permissions as host
+      - "./astro_frontend/src:/usr/src/app/src" # Files and dirs has the same permissions as host
+      - "./astro_frontend/public:/usr/src/app/public" # Files and dirs has the same permissions as host
