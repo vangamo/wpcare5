@@ -1,18 +1,18 @@
 version: '3'
 
 services:
-  frontend_dev:
-    build:
-      context: .
-      dockerfile: frontend.Dockerfile
-    ports:
-      - 4321:4321
-
-    volumes:
-      - "./astro_frontend/src:/usr/src/app/src" # Files and dirs has the same permissions as host
-      - "./astro_frontend/public:/usr/src/app/public" # Files and dirs has the same permissions as host
-
-    command: bunx --bun astro dev --host
+#  frontend_dev:
+#    build:
+#      context: .
+#      dockerfile: frontend.Dockerfile
+#    ports:
+#      - 4321:4321
+#
+#    volumes:
+#      - "./astro_frontend/src:/usr/src/app/src" # Files and dirs has the same permissions as host
+#      - "./astro_frontend/public:/usr/src/app/public" # Files and dirs has the same permissions as host
+#
+#    command: bunx --bun astro dev --host
 
   server_api_dev:
     build:
