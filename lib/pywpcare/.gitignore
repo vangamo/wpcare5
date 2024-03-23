@@ -1,2 +1,8 @@
+# Virtualenv files
+bin
+lib
+pyvenv.cfg
+
+# Library files
 *egg-info
 __pycache__
