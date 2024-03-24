@@ -6,3 +6,6 @@ pyvenv.cfg
 # Library files
 *egg-info
 __pycache__
+
+# Pytest
+.pytest_cache
